@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Le Comptoir de Tigmi | Excellence Marocaine</title>
+    <!-- Chargement de Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Montserrat:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --royal-blue: #002366; 
+            --royal-blue-dark: #001845;
+            --vivid-orange: #FF5F1F; 
+            --soft-white: #F8F9FA;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--royal-blue);
+            color: var(--soft-white);
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1, h2, h3, .font-serif {
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* Animation pour le bouton de commande */
+        @keyframes float {
+            0% { transform: translateY(0px) scale(1); box-shadow: 0 10px 20px rgba(255, 95, 31, 0.4); }
+            50% { transform: translateY(-10px) scale(1.05); box-shadow: 0 25px 30px rgba(255, 95, 31, 0.6); }
+            100% { transform: translateY(0px) scale(1); box-shadow: 0 10px 20px rgba(255, 95, 31, 0.4); }
+        }
+
+        .cta-floating {
+            position: fixed;
+            bottom: 20px; 
+            right: 20px; 
+            z-index: 999;
+            background: var(--vivid-orange);
+            color: white;
+            padding: 1rem 1.8rem; 
+            border-radius: 9999px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            animation: float 3s ease-in-out infinite;
+            border: 2px solid white;
+            transition: all 0.3s ease;
+            text-align: center;
+            font-size: 0.875rem;
+            text-decoration: none;
+        }
+
+        @media (min-width: 768px) {
+            .cta-floating {
+                bottom: 40px;
+                right: 40px;
+                padding: 1.5rem 2.5rem;
+                font-size: 1rem;
+                letter-spacing: 2px;
+            }
+        }
+
+        .cta-floating:hover {
+            background: white;
+            color: var(--royal-blue);
+            transform: scale(1.1);
+        }
+
+        /* Effets d'apparition */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.215, 0.610, 0.355, 1.000);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Styles Hero */
+        .hero-overlay {
+            background: radial-gradient(circle at center, rgba(0, 35, 102, 0.4) 0%, rgba(0, 24, 69, 0.9) 100%);
+        }
+
+        .hero-image {
+            transform: scale(1.1);
+            transition: transform 10s ease-out;
+        }
+
+        .hero-logo-container {
+            position: relative;
+            padding: 2.5rem;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(0, 35, 102, 0.5) 0%, transparent 70%);
+            backdrop-filter: blur(3px);
+            transition: all 1s ease;
+        }
+
+        .accent-card {
+            background-color: var(--royal-blue-dark);
+            border: 2px solid var(--vivid-orange);
+            box-shadow: 15px 15px 0px var(--vivid-orange);
+        }
+
+        .logo-wrapper img {
+            max-height: 80px;
+            width: auto;
+            display: block;
+        }
+
+        @media (min-width: 768px) {
+            .logo-wrapper img {
+                max-height: 120px;
+            }
+        }
+
+        .hero-logo {
+            max-width: 240px;
+            filter: drop-shadow(0 0 15px rgba(0,0,0,0.5));
+        }
+        @media (min-width: 768px) {
+            .hero-logo {
+                max-width: 440px;
+            }
+        }
+
+        /* Styles du Slider */
+        .slider-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+
+        .slides {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .slide {
+            min-width: 100%;
+            display: flex;
+            justify-content: center;
+            padding: 10px;
+        }
+
+        .slider-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 24, 69, 0.7);
+            color: white;
+            border: 1px solid var(--vivid-orange);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+            transition: all 0.3s;
+        }
+
+        .slider-nav:hover {
+            background: var(--vivid-orange);
+        }
+
+        .prev { left: 0; }
+        .next { right: 0; }
+
+        .dots {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .dot.active {
+            background: var(--vivid-orange);
+            transform: scale(1.2);
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--royal-blue-dark); }
+        ::-webkit-scrollbar-thumb { background: var(--vivid-orange); border-radius: 10px; }
+    </style>
+</head>
+<body>
+
+    <!-- Bouton de commande fixe -->
+    <a href="https://le-comptoir-de-tigmi.zelty-order.fr/" target="_blank" rel="noopener noreferrer" class="cta-floating shadow-2xl">
+        Commander
+    </a>
+
+    <!-- En-tête / Navigation -->
+    <nav class="absolute top-0 w-full z-50 p-4 md:p-8 flex flex-col md:flex-row justify-between items-center bg-transparent gap-4" id="mainHeader">
+        <div class="logo-wrapper">
+            <a href="#accueil" class="nav-link">
+                <img src="https://i.ibb.co/YKjqx1Y/Copie-de-Le-Comptoir-de-1-1.png" alt="Logo Le Comptoir de Tigmi">
+            </a>
+        </div>
+        <div class="flex space-x-8 md:space-x-12 uppercase text-[10px] md:text-xs font-semibold tracking-[0.2em]">
+            <a href="#accueil" class="nav-link hover:text-orange-500 transition border-b-2 border-transparent hover:border-orange-500 pb-1 text-white">Accueil</a>
+            <a href="#histoire" class="nav-link hover:text-orange-500 transition border-b-2 border-transparent hover:border-orange-500 pb-1 text-white">L'Esprit</a>
+            <a href="#contact" class="nav-link hover:text-orange-500 transition border-b-2 border-transparent hover:border-orange-500 pb-1 text-white">Contact</a>
+        </div>
+    </nav>
+
+    <!-- Section Hero -->
+    <section id="accueil" class="relative h-[100svh] flex flex-col items-center overflow-hidden">
+        <div class="absolute inset-0">
+            <img src="https://images.unsplash.com/photo-1541518763669-27f704524cc0?q=80&w=2000" alt="Ambiance Marocaine" id="bgHero" class="hero-image w-full h-full object-cover">
+            <div class="absolute inset-0 hero-overlay"></div>
+        </div>
+        
+        <!-- Contenu Hero -->
+        <div class="relative w-full flex flex-col items-center justify-between px-6 h-full reveal active">
+            
+            <div class="h-24 md:h-32"></div>
+
+            <!-- Bloc Central : Logo -->
+            <div class="flex flex-col items-center justify-center flex-grow">
+                <div class="hero-logo-container">
+                    <img src="https://i.ibb.co/YKjqx1Y/Copie-de-Le-Comptoir-de-1-1.png" alt="Tigmi" class="hero-logo">
+                </div>
+            </div>
+
+            <!-- Bloc Bas : Ligne orange -->
+            <div class="w-full flex flex-col items-center pb-20 md:pb-32">
+                <div class="w-16 md:w-24 h-1 md:h-2 bg-orange-500 mb-4"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Histoire & Philosophie -->
+    <section id="histoire" class="py-20 md:py-32 px-6 md:px-24 bg-[#001d54]">
+        <div class="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-12 md:gap-20">
+            <div class="w-full lg:w-1/2 reveal">
+                <div class="accent-card p-1 md:p-2 rounded-xl">
+                    <img src="https://i.ibb.co/Wppyy4bc/Couverture.jpg" alt="Photo de couverture Le Comptoir de Tigmi" class="rounded-lg shadow-2xl w-full">
+                </div>
+            </div>
+            <div class="w-full lg:w-1/2 reveal" style="transition-delay: 100ms;">
+                <h2 class="text-4xl md:text-6xl font-bold mb-6 md:mb-10 italic tracking-tight text-white">La cuisine marocaine <span style="color: var(--vivid-orange)">authentique et maison</span></h2>
+                <div class="space-y-6 md:space-y-8 text-blue-100 text-base md:text-lg leading-loose border-l-4 border-orange-500 pl-6 md:pl-8">
+                    <p>
+                        Le Comptoir de Tigmi est fier de vous proposer ces délicieux mets marocains, entièrement faits maison. Nous privilégions les producteurs et fournisseurs locaux, pour vous faire découvrir ou redécouvrir les 
+                        plats de la gastronomie marocaine : couscous, tajines, soupes, salades, bricks ...
+                    </p>
+                    <p>
+                        Nous vous proposons de vous restaurer sur place les midis du mardi au vendredi, à découvrir notre carte brunch marocain les samedis et dimanches, et à emporter toute la semaine. L'après-midi, nous vous
+                        attendons autour d'un thé et d'un goûter.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Témoignages Slider -->
+    <section class="testimonial-section py-20 md:py-32 px-6 bg-blue-950/50">
+        <div class="max-w-5xl mx-auto text-center reveal">
+            <h2 class="text-3xl md:text-4xl font-serif italic mb-12 text-white">Ce sont nos clients qui le disent</h2>
+            
+            <div class="slider-container">
+                <button class="slider-nav prev" onclick="moveSlide(-1)">&#10094;</button>
+                <div class="slides" id="slider">
+                    <!-- Avis 1 -->
+                    <div class="slide">
+                        <div class="accent-card p-1 md:p-2 rounded-2xl overflow-hidden bg-white/5 w-full">
+                            <img src="https://i.ibb.co/mFYgRjff/Screenshot-2026-01-18-at-13-30-02-avis-sur-le-comptoir-de-tigmi-bernin-Recherche-Google.png" alt="Avis Google 1" class="w-full h-auto rounded-xl">
+                        </div>
+                    </div>
+                    <!-- Avis 2 -->
+                    <div class="slide">
+                        <div class="accent-card p-1 md:p-2 rounded-2xl overflow-hidden bg-white/5 w-full">
+                            <img src="https://i.ibb.co/8LtDJN03/Screenshot-2026-01-18-at-13-35-08-avis-sur-le-comptoir-de-tigmi-bernin-Recherche-Google.png" alt="Avis Google 2" class="w-full h-auto rounded-xl">
+                        </div>
+                    </div>
+                    <!-- Avis 3 -->
+                    <div class="slide">
+                        <div class="accent-card p-1 md:p-2 rounded-2xl overflow-hidden bg-white/5 w-full">
+                            <img src="https://i.ibb.co/HpTBNkJX/Screenshot-2026-01-18-at-13-36-18-avis-sur-le-comptoir-de-tigmi-bernin-Recherche-Google.png" alt="Avis Google 3" class="w-full h-auto rounded-xl">
+                        </div>
+                    </div>
+                </div>
+                <button class="slider-nav next" onclick="moveSlide(1)">&#10095;</button>
+            </div>
+
+            <div class="dots" id="dotsContainer">
+                <div class="dot active" onclick="currentSlide(0)"></div>
+                <div class="dot" onclick="currentSlide(1)"></div>
+                <div class="dot" onclick="currentSlide(2)"></div>
+            </div>
+
+            <p class="mt-10 text-orange-500 font-bold uppercase tracking-widest text-sm">Votre satisfaction, notre fierté</p>
+        </div>
+    </section>
+
+    <!-- Section Horaires -->
+    <section class="py-20 md:py-32 px-6 bg-[#001d54] reveal">
+        <div class="max-w-5xl mx-auto border-2 border-orange-500 p-8 md:p-16 rounded-2xl">
+            <h2 class="text-3xl md:text-5xl font-serif italic mb-12 text-center text-white">Nos Horaires</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <!-- Sur Place -->
+                <div class="space-y-6">
+                    <h3 class="text-xl md:text-2xl font-bold text-orange-500 uppercase tracking-widest border-b border-orange-500/30 pb-2">Sur Place</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <p class="font-bold text-white">Carte classique</p>
+                            <p class="text-blue-200">Mardi au vendredi : 12h00 - 14h30</p>
+                        </div>
+                        <div>
+                            <p class="font-bold text-white">Brunch marocain</p>
+                            <p class="text-blue-200">Samedi et dimanche : 11h30 - 15h00</p>
+                        </div>
+                        <div>
+                            <p class="font-bold text-white">Salon de thé / Goûters</p>
+                            <p class="text-blue-200">15h00 - 18h00</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- À Emporter -->
+                <div class="space-y-6">
+                    <h3 class="text-xl md:text-2xl font-bold text-orange-500 uppercase tracking-widest border-b border-orange-500/30 pb-2">À Emporter</h3>
+                    <div class="h-full flex flex-col justify-start">
+                        <p class="font-bold text-white mb-2">Toute la journée</p>
+                        <p class="text-blue-200 text-lg">Mardi au dimanche</p>
+                        <div class="mt-8 p-4 bg-orange-500/10 border border-orange-500/20 rounded-lg">
+                            <p class="text-sm italic text-orange-200">Pensez à commander à l'avance pour réduire votre attente.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pied de page / Contact -->
+    <footer id="contact" class="py-16 md:py-24 bg-blue-950 border-t-8 border-orange-500">
+        <div class="max-w-5xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 text-center md:text-left">
+            <div class="reveal">
+                <h3 class="text-xl md:text-2xl font-bold mb-4 md:mb-6 text-orange-500 font-serif italic">Le Lieu</h3>
+                <p class="text-white text-base md:text-lg">294 chemin des Vergers</p>
+                <p class="text-white text-base md:text-lg italic">38190 Bernin</p>
+            </div>
+            <div class="reveal" style="transition-delay: 100ms;">
+                <h3 class="text-xl md:text-2xl font-bold mb-4 md:mb-6 text-orange-500 font-serif italic">Contact</h3>
+                <p class="text-blue-200 text-base md:text-lg">09 62 43 06 74</p>
+                <p class="text-blue-200 text-base md:text-lg font-bold hover:text-orange-500 transition">lecomptoirdetigmi@gmail.com</p>
+            </div>
+        </div>
+        <div class="mt-16 md:mt-20 pt-8 border-t border-white/10 text-center px-6">
+            <p class="text-[8px] md:text-xs text-blue-400 uppercase tracking-[0.3em] md:tracking-[0.5em] font-medium leading-loose">
+                &copy; 2026 LE COMPTOIR DE TIGMI.<br class="md:hidden"> BERNIN • GASTRONOMIE MAROCAINE.
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Gestion du défilement fluide
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                const targetId = this.getAttribute('href');
+                if (targetId.startsWith('#')) {
+                    e.preventDefault();
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                }
+            });
+        });
+
+        // Animation d'apparition au défilement
+        function reveal() {
+            const reveals = document.querySelectorAll(".reveal");
+            for (let i = 0; i < reveals.length; i++) {
+                const windowHeight = window.innerHeight;
+                const elementTop = reveals[i].getBoundingClientRect().top;
+                const elementVisible = 80;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("active");
+                }
+            }
+        }
+
+        // Effet de zoom fluide au chargement
+        window.addEventListener("load", () => {
+            const bgHero = document.getElementById('bgHero');
+            if(bgHero) bgHero.style.transform = "scale(1)";
+            reveal();
+        });
+
+        window.addEventListener("scroll", reveal);
+
+        // Logique du Slider
+        let currentIdx = 0;
+        let autoPlayTimer;
+
+        function updateSlider() {
+            const slider = document.getElementById('slider');
+            const dots = document.querySelectorAll('.dot');
+            if(!slider) return;
+            
+            slider.style.transform = `translateX(-${currentIdx * 100}%)`;
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentIdx);
+            });
+        }
+
+        function moveSlide(direction) {
+            const totalSlides = document.querySelectorAll('.slide').length;
+            if (totalSlides === 0) return;
+            currentIdx = (currentIdx + direction + totalSlides) % totalSlides;
+            updateSlider();
+            resetAutoPlay();
+        }
+
+        function currentSlide(index) {
+            currentIdx = index;
+            updateSlider();
+            resetAutoPlay();
+        }
+
+        function startAutoPlay() {
+            autoPlayTimer = setInterval(() => {
+                moveSlide(1);
+            }, 5000);
+        }
+
+        function resetAutoPlay() {
+            clearInterval(autoPlayTimer);
+            startAutoPlay();
+        }
+
+        // Démarrage initial
+        document.addEventListener('DOMContentLoaded', () => {
+            startAutoPlay();
+            reveal();
+        });
+    </script>
+</body>
+</html>
